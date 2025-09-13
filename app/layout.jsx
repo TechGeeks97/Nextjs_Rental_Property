@@ -1,4 +1,5 @@
 import NavBar from "@/components/Nav";
+import Footer from "@/components/Footer";
 import "@/assets/styles/globals.css";
 export const metadata = {
   title: "Rental Property",
@@ -11,6 +12,7 @@ const MainLayout = ({ children }) => {
       <body>
         <NavBar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

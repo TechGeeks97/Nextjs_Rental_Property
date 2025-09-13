@@ -14,7 +14,7 @@ const NavBar = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLoggedIn, setisLoggedIn] = useState(false);
   return (
-    <nav className="bg-blue-700 border-b border-blue-500">
+    <nav className="bg-orange-700 border-b border-orange-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-20 items-center justify-between">
           {/* Mobile menu button */}
@@ -22,7 +22,7 @@ const NavBar = () => {
             <button
               type="button"
               id="mobile-dropdown-button"
-              className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-orange-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -51,7 +51,7 @@ const NavBar = () => {
             <Link className="flex flex-shrink-0 items-center" href="/">
               <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
               <span className="hidden md:block text-white text-2xl font-bold ml-2">
-                PropertyPulse
+                Rental Property
               </span>
             </Link>
 
@@ -65,8 +65,8 @@ const NavBar = () => {
                       key={path}
                       href={path}
                       className={`${
-                        pathname === path ? "bg-black" : ""
-                      } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                        pathname === path ? "bg-white text-black" : ""
+                      }  hover:bg-orange-900 hover:text-white rounded-md px-3 py-2`}
                     >
                       {name}
                     </Link>
@@ -78,7 +78,7 @@ const NavBar = () => {
             // logged out view
             <div className="hidden md:block md:ml-6">
               <div className="flex items-center">
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
+                <button className="flex items-center text-white bg-white-700 border border-white-700 hover:bg-white-900 hover:text-black rounded-md px-3 py-2">
                   <FaGoogle className="text-white mr-2" />
                   <span>Login or Register</span>
                 </button>
