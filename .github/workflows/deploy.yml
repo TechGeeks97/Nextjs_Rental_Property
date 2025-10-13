@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
+      # 1. Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: "18"
 
-      # 3. Cache npm modules (optional but speeds up builds)
+      # 3. Cache npm modules for faster builds
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
@@ -29,12 +29,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 4. Install dependencies (Linux compatible)
+      # 4. Install Linux-compatible dependencies
       - name: Install dependencies
         run: |
-          # Remove any Mac-specific binaries
+          # Remove node_modules and package-lock.json in case of Mac binaries
           rm -rf node_modules package-lock.json
-          # Install fresh Linux-compatible dependencies
+          # Install fresh dependencies for Linux (forces correct SWC binary)
           npm install
 
       # 5. Build Next.js app
