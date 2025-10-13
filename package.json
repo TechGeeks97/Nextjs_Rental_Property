@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/swc-darwin-arm64": "^15.5.4",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.1",
     "next": "14.2.32",
     "react": "^18",
     "react-dom": "^18",
