@@ -10,14 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
 
+      # 3. Cache npm modules (optional but speeds up builds)
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
@@ -26,12 +29,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # 4. Install dependencies (Linux compatible)
       - name: Install dependencies
-        run: npm ci
+        run: |
+          # Remove any Mac-specific binaries
+          rm -rf node_modules package-lock.json
+          # Install fresh Linux-compatible dependencies
+          npm install
 
+      # 5. Build Next.js app
       - name: Build Next.js app
         run: npm run build
 
+      # 6. Deploy to Vercel
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25.2.0
         with:
