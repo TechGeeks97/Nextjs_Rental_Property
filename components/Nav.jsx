@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,12 +7,23 @@ import { navItems } from "@/utils/helper";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
-
+import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 const NavBar = () => {
+  const { data: session } = useSession();
+
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [providers, setProviders] = useState(null);
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    };
+    setAuthProviders();
+  }, []);
+  console.log("session", session);
+  console.log("providers", providers);
   return (
     <nav className="bg-orange-700 border-b border-orange-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -59,7 +70,7 @@ const NavBar = () => {
             <div className="hidden md:ml-6 md:block">
               <div className="flex space-x-2">
                 {navItems
-                  .filter((item) => !item.requiresAuth || isLoggedIn)
+                  .filter((item) => !item.requiresAuth || session)
                   .map(({ name, path }) => (
                     <Link
                       key={path}
@@ -74,14 +85,23 @@ const NavBar = () => {
               </div>
             </div>
           </div>
-          {!isLoggedIn ? (
+          {!session ? (
             // logged out view
             <div className="hidden md:block md:ml-6">
               <div className="flex items-center">
-                <button className="flex items-center text-white bg-white-700 border border-white-700 hover:bg-white-900 hover:text-black rounded-md px-3 py-2">
-                  <FaGoogle className="text-white mr-2" />
-                  <span>Login or Register</span>
-                </button>
+                {providers &&
+                  Object.values(providers).map((provider, index) => (
+                    <button
+                      onClick={() => signIn(provider.id)}
+                      key={index}
+                      className="flex items-center text-white bg-white-700 border border-white-700 hover:bg-white-900 hover:text-black rounded-md px-3 py-2"
+                    >
+                      {provider.name === "Google" && (
+                        <FaGoogle className="text-white mr-2" />
+                      )}
+                      <span>Login or Register with {provider.name}</span>
+                    </button>
+                  ))}
               </div>
             </div>
           ) : (
@@ -179,7 +199,7 @@ const NavBar = () => {
         <div id="mobile-menu">
           <div className="space-y-1 px-2 pb-3 pt-2">
             {navItems
-              .filter((item) => !item.requiresAuth || isLoggedIn) // show items based on auth
+              .filter((item) => !item.requiresAuth || session) // show items based on auth
               .map(({ name, path }) => (
                 <Link
                   key={path}
@@ -193,7 +213,7 @@ const NavBar = () => {
               ))}
 
             {/* Login/Register button for non-logged-in users */}
-            {!isLoggedIn && (
+            {!session && (
               <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
                 <i className="fa-brands fa-google mr-2"></i>
                 <span>Login or Register</span>
